@@ -4,8 +4,12 @@ import * as demo from "./demo";
 // Khi chưa cấu hình Supabase, trả demo dataset để UI vẫn render được.
 // Khi có Supabase, query thật + fallback demo nếu lỗi/không có data.
 
+type Sb = NonNullable<Awaited<ReturnType<typeof createClientOrNull>>>;
+// Supabase query builders là PromiseLike — chấp nhận luôn thay vì Promise để tránh type-check strict lỗi.
+type QueryLike = PromiseLike<{ data: unknown }>;
+
 async function safeFetch<T>(
-  query: (sb: NonNullable<Awaited<ReturnType<typeof createClientOrNull>>>) => Promise<{ data: unknown }>,
+  query: (sb: Sb) => QueryLike,
   fallback: T,
 ): Promise<T> {
   try {
