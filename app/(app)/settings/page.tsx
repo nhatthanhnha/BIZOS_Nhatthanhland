@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,14 +21,12 @@ import {
 } from "lucide-react";
 
 export default async function SettingsPage() {
+  const { t } = await tServer();
   const [departments, employees] = await Promise.all([fetchDepartments(), fetchEmployees()]);
 
   return (
     <div>
-      <PageHeader
-        title="Cài đặt"
-        description="Company · Cơ cấu · KPI formula · Compensation · Permissions · Integrations"
-      />
+      <PageHeader title={t("settings.title")} description={t("settings.subtitle")} />
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 mb-6">
         <KpiCard label="Company" value={demo.demoCompany.name} accent="indigo" icon={<Building2 className="h-3.5 w-3.5" />} />

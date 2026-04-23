@@ -1,14 +1,17 @@
 # BIZOS — Business Operating System
 
-> 🟣 Hệ thống quản trị công ty: **Task → KPI cá nhân → KPI phòng ban → KPI công ty → Tài chính**
+> 🇬🇧 **EN** · Company OS: **Task → personal KPI → team KPI → company KPI → Financials.**
+> A Next.js + Supabase business-operating system — 19 production-grade screens, KPI cascade, compensation rule engine, P&L/BS/CF, what-if Forecast, OKRs, Audit, SOPs.
 >
-> **Live demo:** [bizos-company-os.vercel.app](https://bizos-company-os.vercel.app) · tất cả trang chạy ở Demo mode ngay cả khi chưa cấu hình Supabase.
+> 🇻🇳 **VI** · Hệ thống vận hành công ty: **Task → KPI cá nhân → KPI phòng ban → KPI công ty → Tài chính.**
 >
-> 📘 **Hướng dẫn sử dụng đầy đủ:** [/guide](https://bizos-company-os.vercel.app/guide) — 19 trang, 3 workflow end-to-end, tips.
+> **Live demo:** [bizos-company-os.vercel.app](https://bizos-company-os.vercel.app) — browse all 19 screens in Demo mode even without Supabase. Toggle **VI / EN** from the top bar.
+>
+> 📘 **Guide / Hướng dẫn:** [/guide](https://bizos-company-os.vercel.app/guide) — full walkthrough of all 19 screens + 3 end-to-end workflows + tips.
 
 by [**Alex Le**](mailto:alexle@titanlabs.vn) · `alexle@titanlabs.vn`
 Donate: [PayPal — sai211dn@gmail.com](https://www.paypal.com/paypalme/sai211dn)
-Cần deploy hoặc tuỳ biến cho công ty? Email alexle@titanlabs.vn (VN/EN).
+Need a custom deployment? Email `alexle@titanlabs.vn` (VN/EN welcomed).
 
 ---
 

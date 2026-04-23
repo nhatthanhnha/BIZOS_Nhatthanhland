@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable, type Column } from "@/components/tables/DataTable";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import { formatCompactVND } from "@/lib/utils";
 import type { Department } from "@/types/domain";
 
 export default async function DepartmentsPage() {
+  const { t } = await tServer();
   const [departments, employees, kpis, targets, actuals] = await Promise.all([
     fetchDepartments(),
     fetchEmployees(),
@@ -83,9 +85,9 @@ export default async function DepartmentsPage() {
   return (
     <div>
       <PageHeader
-        title="Phòng ban"
-        description="Danh sách và hiệu suất của các phòng ban"
-        actions={<Button>+ Thêm phòng ban</Button>}
+        title={t("depts.title")}
+        description={t("depts.subtitle")}
+        actions={<Button>{t("depts.addNew")}</Button>}
       />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">

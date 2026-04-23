@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import { fetchObjectives, fetchKeyResults, fetchEmployees, fetchDepartments } fr
 import { Flag, Target, CheckCircle2, AlertTriangle } from "lucide-react";
 
 export default async function OkrPage() {
+  const { t } = await tServer();
   const [objs, krs, employees, departments] = await Promise.all([
     fetchObjectives(),
     fetchKeyResults(),
@@ -30,9 +32,9 @@ export default async function OkrPage() {
   return (
     <div>
       <PageHeader
-        title="Mục tiêu chiến lược (OKR)"
-        description="Objective · Key Result · Alignment với KPI Tree"
-        actions={<Button>+ Thêm Objective</Button>}
+        title={t("okr.title")}
+        description={t("okr.subtitle")}
+        actions={<Button>{t("okr.new")}</Button>}
       />
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3 mb-6">

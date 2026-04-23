@@ -10,6 +10,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { KpiCard } from "@/components/kpi/KpiCard";
@@ -36,6 +37,7 @@ import { buildKpiRows } from "@/lib/kpi/cascade";
 import { formatCompactVND, formatPercent } from "@/lib/utils";
 
 export default async function DashboardPage() {
+  const { t } = await tServer();
   const [kpis, targets, actuals, employees, payroll, tasks, alerts, entries, departments] = await Promise.all([
     fetchKpis(),
     fetchKpiTargets(),
@@ -106,9 +108,9 @@ export default async function DashboardPage() {
   return (
     <div>
       <PageHeader
-        title="Dashboard tổng quan"
-        description="Business Operating System · Tháng 04/2026"
-        actions={<Badge variant="info">Cập nhật lúc vừa xong</Badge>}
+        title={t("dashboard.title")}
+        description={t("dashboard.subtitle")}
+        actions={<Badge variant="info">{t("common.updated")}</Badge>}
       />
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 mb-6">

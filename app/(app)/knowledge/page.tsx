@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { BookOpen, FileCheck, Shield, CheckSquare, FileText } from "lucide-react
 import { fetchSops, fetchDepartments } from "@/lib/queries";
 
 export default async function KnowledgePage() {
+  const { t } = await tServer();
   const [sops, departments] = await Promise.all([fetchSops(), fetchDepartments()]);
 
   const byDept = departments.map((d) => ({
@@ -24,9 +26,9 @@ export default async function KnowledgePage() {
   return (
     <div>
       <PageHeader
-        title="SOP / Playbook"
-        description="Standard Operating Procedure · Playbook · Checklist · Policy"
-        actions={<Button>+ Thêm tài liệu</Button>}
+        title={t("knowledge.title")}
+        description={t("knowledge.subtitle")}
+        actions={<Button>+ SOP</Button>}
       />
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3 mb-6">

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,7 @@ const statusTone: Record<Project["status"], "success" | "info" | "warning" | "ou
 };
 
 export default async function ProjectsPage() {
+  const { t } = await tServer();
   const [projects, employees] = await Promise.all([fetchProjects(), fetchEmployees()]);
 
   type Row = Project & { owner_name: string };
@@ -66,9 +68,9 @@ export default async function ProjectsPage() {
   return (
     <div>
       <PageHeader
-        title="Dự án"
-        description="Initiative · Project tracking · ROI · Cross-team dependencies"
-        actions={<Button>+ Dự án mới</Button>}
+        title={t("proj.title")}
+        description={t("proj.subtitle")}
+        actions={<Button>{t("proj.new")}</Button>}
       />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">

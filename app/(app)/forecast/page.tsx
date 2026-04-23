@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { KpiCard } from "@/components/kpi/KpiCard";
@@ -9,6 +10,7 @@ import { buildKpiRows } from "@/lib/kpi/cascade";
 import { TrendingUp, Target, BarChart3, LineChart } from "lucide-react";
 
 export default async function ForecastPage() {
+  const { t } = await tServer();
   const [kpis, targets, actuals] = await Promise.all([
     fetchKpis(),
     fetchKpiTargets(),
@@ -19,8 +21,8 @@ export default async function ForecastPage() {
   return (
     <div>
       <PageHeader
-        title="Forecast / Mô phỏng"
-        description="What-if scenario · KPI lá → propagate lên KPI công ty → tài chính"
+        title={t("forecast.title")}
+        description={t("forecast.subtitle")}
         actions={<Badge variant="info">Simulator live</Badge>}
       />
 

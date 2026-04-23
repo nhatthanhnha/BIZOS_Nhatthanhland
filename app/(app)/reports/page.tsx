@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,7 +25,8 @@ const schedules = [
   { id: "s4", kind: "Dept perf", cron: "0 9 1 * *", next: "Ngày 1 hằng tháng, 9:00", recipients: 6 },
 ];
 
-export default function ReportsPage() {
+export default async function ReportsPage() {
+  const { t } = await tServer();
   const columns: Column<(typeof reports)[number]>[] = [
     {
       key: "title",
@@ -68,9 +70,9 @@ export default function ReportsPage() {
   return (
     <div>
       <PageHeader
-        title="Report Center"
-        description="Snapshot tuần · tháng · quý · lịch gửi email tự động"
-        actions={<Button>+ Tạo báo cáo</Button>}
+        title={t("reports.title")}
+        description={t("reports.subtitle")}
+        actions={<Button>{t("reports.new")}</Button>}
       />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">

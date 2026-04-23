@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,7 @@ const iconBy = {
 };
 
 export default async function AlertsPage() {
+  const { t } = await tServer();
   const alerts = await fetchAlerts();
 
   const critical = alerts.filter((a) => a.severity === "critical").length;
@@ -34,9 +36,9 @@ export default async function AlertsPage() {
   return (
     <div>
       <PageHeader
-        title="Alerts Center"
-        description="KPI · Task · Cash flow · Workload · Compliance"
-        actions={<Button variant="outline">Cấu hình rule</Button>}
+        title={t("alerts.title")}
+        description={t("alerts.subtitle")}
+        actions={<Button variant="outline">{t("common.edit")} rule</Button>}
       />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">

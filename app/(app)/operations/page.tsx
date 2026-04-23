@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ const COLUMNS: Array<{ key: Task["status"]; label: string; tone: string }> = [
 ];
 
 export default async function OperationsPage() {
+  const { t } = await tServer();
   const [tasks, employees, kpis] = await Promise.all([fetchTasks(), fetchEmployees(), fetchKpis()]);
 
   const done = tasks.filter((t) => t.status === "done").length;
@@ -65,9 +67,9 @@ export default async function OperationsPage() {
   return (
     <div>
       <PageHeader
-        title="Công việc hằng ngày"
-        description="Task board · SLA · Task-to-KPI mapping"
-        actions={<Button>+ Task mới</Button>}
+        title={t("ops.title")}
+        description={t("ops.subtitle")}
+        actions={<Button>{t("ops.newTask")}</Button>}
       />
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 mb-6">

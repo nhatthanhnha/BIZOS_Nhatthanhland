@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "@/lib/nav";
+import { t as rawT, type Locale } from "@/lib/i18n/dict";
 import { cn } from "@/lib/utils";
 
-export function Sidebar() {
+export function Sidebar({ locale = "vi" }: { locale?: Locale }) {
   const pathname = usePathname();
+  const t = (key: Parameters<typeof rawT>[1]) => rawT(locale, key);
 
   return (
     <aside className="hidden md:flex md:w-56 md:flex-col md:fixed md:inset-y-0 md:left-0 md:z-30 md:bg-white md:ring-1 md:ring-zinc-100">
@@ -16,7 +18,7 @@ export function Sidebar() {
         </div>
         <div className="flex flex-col leading-tight">
           <span className="text-[13px] font-bold text-zinc-900">BIZOS</span>
-          <span className="text-[9px] text-zinc-500 -mt-0.5">Business OS</span>
+          <span className="text-[9px] text-zinc-500 -mt-0.5">{t("brand.tagline")}</span>
         </div>
       </div>
 
@@ -37,18 +39,16 @@ export function Sidebar() {
               )}
             >
               <Icon className="h-3.5 w-3.5 shrink-0" />
-              <span className="truncate">{item.label}</span>
+              <span className="truncate">{t(item.labelKey)}</span>
             </Link>
           );
         })}
       </nav>
 
       <div className="m-2 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-700 p-3 text-white">
-        <div className="text-[10px] opacity-80 mb-0.5">Hiệu suất công ty</div>
+        <div className="text-[10px] opacity-80 mb-0.5">{t("sidebar.perf")}</div>
         <div className="text-xl font-bold leading-tight">87%</div>
-        <div className="text-[10px] opacity-80 mt-0.5 leading-tight">
-          Vượt mục tiêu tháng này
-        </div>
+        <div className="text-[10px] opacity-80 mt-0.5 leading-tight">{t("sidebar.perfHint")}</div>
       </div>
     </aside>
   );

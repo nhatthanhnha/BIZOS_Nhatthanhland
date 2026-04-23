@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { KpiCard } from "@/components/kpi/KpiCard";
@@ -13,6 +14,7 @@ import type { PayrollEntry } from "@/types/domain";
 import { Wallet, TrendingUp, Users, Gift, PiggyBank, Percent } from "lucide-react";
 
 export default async function CompensationPage() {
+  const { t } = await tServer();
   const [employees, payroll, departments] = await Promise.all([
     fetchEmployees(),
     fetchPayroll(),
@@ -75,9 +77,9 @@ export default async function CompensationPage() {
   return (
     <div>
       <PageHeader
-        title="Lương thưởng"
-        description="Payroll snapshot · Incentive simulator · Kỳ 2026-04"
-        actions={<Badge variant="info">Draft</Badge>}
+        title={t("comp.title")}
+        description={t("comp.subtitle")}
+        actions={<Badge variant="info">{t("common.draft")}</Badge>}
       />
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 mb-6">

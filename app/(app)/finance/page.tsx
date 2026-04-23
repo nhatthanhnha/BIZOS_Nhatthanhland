@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { KpiCard } from "@/components/kpi/KpiCard";
@@ -12,6 +13,7 @@ import { formatCompactVND, formatPercent, formatVND } from "@/lib/utils";
 import { CircleDollarSign, TrendingUp, Wallet, Landmark, PiggyBank, Percent } from "lucide-react";
 
 export default async function FinancePage() {
+  const { t } = await tServer();
   const [entries, payroll, departments] = await Promise.all([
     fetchAccounting(),
     fetchPayroll(),
@@ -51,8 +53,8 @@ export default async function FinancePage() {
   return (
     <div>
       <PageHeader
-        title="Tài chính"
-        description="Dashboard tổng quan · Tháng 04/2026"
+        title={t("finance.title")}
+        description={t("finance.subtitle")}
         actions={<Badge variant="info">YTD</Badge>}
       />
 

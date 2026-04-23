@@ -21,32 +21,33 @@ import {
   HelpCircle,
   type LucideIcon,
 } from "lucide-react";
+import type { DICT } from "./i18n/dict";
 
 export type NavItem = {
   href: string;
-  label: string;
+  labelKey: keyof typeof DICT;
   icon: LucideIcon;
 };
 
 export const NAV_ITEMS: NavItem[] = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/org", label: "Sơ đồ tổ chức", icon: Network },
-  { href: "/departments", label: "Phòng ban", icon: Building2 },
-  { href: "/people", label: "Nhân sự", icon: Users },
-  { href: "/kpi", label: "KPI Tree", icon: Target },
-  { href: "/operations", label: "Công việc", icon: ListChecks },
-  { href: "/compensation", label: "Lương thưởng", icon: Wallet },
-  { href: "/projects", label: "Dự án", icon: FolderKanban },
-  { href: "/finance", label: "Tài chính", icon: Landmark },
-  { href: "/reports", label: "Báo cáo", icon: FileBarChart },
-  { href: "/alerts", label: "Cảnh báo", icon: Bell },
-  { href: "/approvals", label: "Phê duyệt", icon: CheckSquare },
-  { href: "/audit", label: "Audit log", icon: History },
-  { href: "/okr", label: "Mục tiêu OKR", icon: Flag },
-  { href: "/forecast", label: "Forecast", icon: TrendingUp },
-  { href: "/recruiting", label: "Tuyển dụng", icon: UserPlus },
-  { href: "/knowledge", label: "SOP / Playbook", icon: BookOpen },
-  { href: "/profile", label: "Tài khoản", icon: UserCircle },
-  { href: "/settings", label: "Cài đặt", icon: Settings },
-  { href: "/guide", label: "Hướng dẫn", icon: HelpCircle },
+  { href: "/dashboard", labelKey: "nav.dashboard", icon: LayoutDashboard },
+  { href: "/org", labelKey: "nav.org", icon: Network },
+  { href: "/departments", labelKey: "nav.departments", icon: Building2 },
+  { href: "/people", labelKey: "nav.people", icon: Users },
+  { href: "/kpi", labelKey: "nav.kpi", icon: Target },
+  { href: "/operations", labelKey: "nav.operations", icon: ListChecks },
+  { href: "/compensation", labelKey: "nav.compensation", icon: Wallet },
+  { href: "/projects", labelKey: "nav.projects", icon: FolderKanban },
+  { href: "/finance", labelKey: "nav.finance", icon: Landmark },
+  { href: "/reports", labelKey: "nav.reports", icon: FileBarChart },
+  { href: "/alerts", labelKey: "nav.alerts", icon: Bell },
+  { href: "/approvals", labelKey: "nav.approvals", icon: CheckSquare },
+  { href: "/audit", labelKey: "nav.audit", icon: History },
+  { href: "/okr", labelKey: "nav.okr", icon: Flag },
+  { href: "/forecast", labelKey: "nav.forecast", icon: TrendingUp },
+  { href: "/recruiting", labelKey: "nav.recruiting", icon: UserPlus },
+  { href: "/knowledge", labelKey: "nav.knowledge", icon: BookOpen },
+  { href: "/profile", labelKey: "nav.profile", icon: UserCircle },
+  { href: "/settings", labelKey: "nav.settings", icon: Settings },
+  { href: "/guide", labelKey: "nav.guide", icon: HelpCircle },
 ];

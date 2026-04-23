@@ -3,6 +3,7 @@ import { login } from "../actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { tServer } from "@/lib/i18n/server";
 
 export default async function LoginPage({
   searchParams,
@@ -10,17 +11,18 @@ export default async function LoginPage({
   searchParams: Promise<{ next?: string; registered?: string; error?: string }>;
 }) {
   const { next, registered, error } = await searchParams;
+  const { t } = await tServer();
 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-zinc-900">Đăng nhập</h2>
-        <p className="text-sm text-zinc-500 mt-1">Chào mừng trở lại BIZOS.</p>
+        <h2 className="text-2xl font-bold text-zinc-900">{t("common.login")}</h2>
+        <p className="text-sm text-zinc-500 mt-1">{t("auth.welcome")}</p>
       </div>
 
       {registered && (
         <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">
-          Đăng ký thành công. Hãy kiểm tra email để xác minh, rồi đăng nhập.
+          {t("auth.registered")}
         </div>
       )}
       {error && (
@@ -32,27 +34,27 @@ export default async function LoginPage({
       <form action={login} className="space-y-4">
         <input type="hidden" name="next" value={next ?? "/dashboard"} />
         <div className="space-y-1.5">
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" name="email" type="email" placeholder="ban@congty.vn" required />
+          <Label htmlFor="email">{t("auth.labelEmail")}</Label>
+          <Input id="email" name="email" type="email" placeholder="you@company.com" required />
         </div>
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <Label htmlFor="password">Mật khẩu</Label>
+            <Label htmlFor="password">{t("auth.labelPassword")}</Label>
             <Link href="/reset-password" className="text-xs text-indigo-600 hover:underline">
-              Quên mật khẩu?
+              {t("auth.forgot")}
             </Link>
           </div>
           <Input id="password" name="password" type="password" required />
         </div>
         <Button type="submit" className="w-full">
-          Đăng nhập
+          {t("common.login")}
         </Button>
       </form>
 
       <div className="text-center text-sm text-zinc-500">
-        Chưa có tài khoản?{" "}
+        {t("auth.noAccount")}{" "}
         <Link href="/signup" className="text-indigo-600 font-medium hover:underline">
-          Đăng ký
+          {t("common.signup")}
         </Link>
       </div>
     </div>

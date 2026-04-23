@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ import { Users, UserPlus, Briefcase, TrendingUp } from "lucide-react";
 import type { Employee } from "@/types/domain";
 
 export default async function PeoplePage() {
+  const { t } = await tServer();
   const [employees, departments, kpis] = await Promise.all([
     fetchEmployees(),
     fetchDepartments(),
@@ -74,9 +76,9 @@ export default async function PeoplePage() {
   return (
     <div>
       <PageHeader
-        title="Nhân sự"
-        description="Employee directory · hồ sơ chi tiết · impact path"
-        actions={<Button>+ Thêm nhân sự</Button>}
+        title={t("people.title")}
+        description={t("people.subtitle")}
+        actions={<Button>{t("people.addNew")}</Button>}
       />
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3 mb-6">

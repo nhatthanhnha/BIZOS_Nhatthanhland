@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ import type { JobRequisition } from "@/types/domain";
 import { UserPlus, Users, Clock, Award } from "lucide-react";
 
 export default async function RecruitingPage() {
+  const { t } = await tServer();
   const [requisitions, departments] = await Promise.all([
     fetchRequisitions(),
     fetchDepartments(),
@@ -64,9 +66,9 @@ export default async function RecruitingPage() {
   return (
     <div>
       <PageHeader
-        title="Tuyển dụng & Năng lực"
-        description="Job requisition · Skill matrix · Succession planning"
-        actions={<Button>+ Yêu cầu tuyển dụng</Button>}
+        title={t("recruiting.title")}
+        description={t("recruiting.subtitle")}
+        actions={<Button>+ {t("nav.recruiting")}</Button>}
       />
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3 mb-6">

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { KpiCard } from "@/components/kpi/KpiCard";
@@ -22,6 +23,7 @@ import { formatCompactVND } from "@/lib/utils";
 import { Users, Network, Wallet, Target, Sparkles } from "lucide-react";
 
 export default async function OrgPage() {
+  const { t } = await tServer();
   const [departments, employees, kpis, targets, actuals] = await Promise.all([
     fetchDepartments(),
     fetchEmployees(),
@@ -57,8 +59,8 @@ export default async function OrgPage() {
   return (
     <div>
       <PageHeader
-        title="Sơ đồ tổ chức"
-        description="Company → Department → Team → Individual"
+        title={t("org.title")}
+        description={t("org.subtitle")}
         actions={<Badge variant="info">{demo.demoCompany.name}</Badge>}
       />
 

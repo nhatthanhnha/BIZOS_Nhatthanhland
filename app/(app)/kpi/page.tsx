@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,7 @@ import { buildKpiRows } from "@/lib/kpi/cascade";
 import { Target } from "lucide-react";
 
 export default async function KpiPage() {
+  const { t } = await tServer();
   const [kpis, targets, actuals, tasks, employees] = await Promise.all([
     fetchKpis(),
     fetchKpiTargets(),
@@ -88,14 +90,14 @@ export default async function KpiPage() {
   return (
     <div>
       <PageHeader
-        title="KPI Tree"
-        description="Cascade: Company → Department → Team → Employee"
+        title={t("kpi.title")}
+        description={t("kpi.subtitle")}
         actions={
           <div className="flex items-center gap-2">
-            <Badge variant="info">Tháng 04/2026</Badge>
+            <Badge variant="info">{t("topbar.period")}</Badge>
             <Link href="/forecast">
               <Button variant="outline" size="sm">
-                Mở Forecast
+                {t("kpi.openForecast")}
               </Button>
             </Link>
           </div>

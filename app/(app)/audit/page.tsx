@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import { History, Shield, Download, Filter } from "lucide-react";
 import type { AuditLog } from "@/types/domain";
 
 export default async function AuditPage() {
+  const { t } = await tServer();
   const [logs, employees] = await Promise.all([fetchAuditLogs(), fetchEmployees()]);
 
   type Row = AuditLog & { actor_name: string };
@@ -89,15 +91,15 @@ export default async function AuditPage() {
   return (
     <div>
       <PageHeader
-        title="Audit Log"
-        description="Lịch sử mọi thay đổi: ai · sửa gì · khi nào"
+        title={t("audit.title")}
+        description={t("audit.subtitle")}
         actions={
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm">
-              <Filter className="h-3.5 w-3.5" /> Filter
+              <Filter className="h-3.5 w-3.5" /> {t("common.filter")}
             </Button>
             <Button variant="outline" size="sm">
-              <Download className="h-3.5 w-3.5" /> Export
+              <Download className="h-3.5 w-3.5" /> {t("common.export")}
             </Button>
           </div>
         }

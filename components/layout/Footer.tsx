@@ -1,6 +1,9 @@
 import { Mail, Heart } from "lucide-react";
+import type { Locale } from "@/lib/i18n/dict";
 
-export function Footer() {
+export function Footer({ locale = "vi" }: { locale?: Locale }) {
+  const vn = locale === "vi";
+
   return (
     <footer className="mt-10 border-t border-zinc-200 bg-white">
       <div className="mx-auto px-6 py-6 text-sm text-zinc-600">
@@ -10,7 +13,7 @@ export function Footer() {
               BIZOS — Business Operating System
             </div>
             <div className="text-xs text-zinc-500">
-              by{" "}
+              {vn ? "by" : "by"}{" "}
               <a
                 href="mailto:alexle@titanlabs.vn"
                 className="font-medium text-indigo-600 hover:underline"
@@ -29,21 +32,16 @@ export function Footer() {
               className="inline-flex items-center gap-1.5 font-medium text-rose-600 hover:underline"
             >
               <Heart className="h-3.5 w-3.5" />
-              Donate PayPal: sai211dn@gmail.com
+              {vn ? "Ủng hộ PayPal" : "Donate PayPal"}: sai211dn@gmail.com
             </a>
             <a
               href="mailto:alexle@titanlabs.vn"
               className="inline-flex items-center gap-1.5 text-zinc-500 hover:text-zinc-700"
             >
               <Mail className="h-3.5 w-3.5" />
-              Cần deploy / tuỳ biến cho công ty? Liên hệ alexle@titanlabs.vn
-            </a>
-            <a
-              href="mailto:alexle@titanlabs.vn"
-              className="inline-flex items-center gap-1.5 text-zinc-500 hover:text-zinc-700"
-            >
-              <Mail className="h-3.5 w-3.5" />
-              Need a custom deployment for your company? Contact alexle@titanlabs.vn
+              {vn
+                ? "Cần deploy / tuỳ biến cho công ty? Liên hệ alexle@titanlabs.vn"
+                : "Need a custom deployment for your company? Contact alexle@titanlabs.vn"}
             </a>
           </div>
         </div>

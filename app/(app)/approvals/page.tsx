@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/layout/PageHeader";
+import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,7 @@ const kindTone: Record<string, "info" | "success" | "warning" | "outline"> = {
 };
 
 export default async function ApprovalsPage() {
+  const { t } = await tServer();
   const [approvals, employees] = await Promise.all([fetchApprovals(), fetchEmployees()]);
 
   const pending = approvals.filter((a) => a.status === "pending").length;
@@ -39,9 +41,9 @@ export default async function ApprovalsPage() {
   return (
     <div>
       <PageHeader
-        title="Approval Center"
-        description="KPI · Công thức · Thưởng · Ngân sách · Tuyển dụng"
-        actions={<Button variant="outline">Cấu hình workflow</Button>}
+        title={t("approvals.title")}
+        description={t("approvals.subtitle")}
+        actions={<Button variant="outline">Workflow</Button>}
       />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">

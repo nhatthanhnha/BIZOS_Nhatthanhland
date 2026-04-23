@@ -1,4 +1,5 @@
 import { createClientOrNull } from "@/lib/supabase/server";
+import { tServer } from "@/lib/i18n/server";
 import { logout } from "@/app/(auth)/actions";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,6 +26,7 @@ import {
 } from "lucide-react";
 
 export default async function ProfilePage() {
+  const { t } = await tServer();
   const supabase = await createClientOrNull();
   const user = supabase ? (await supabase.auth.getUser()).data.user : null;
 
@@ -34,10 +36,7 @@ export default async function ProfilePage() {
 
   return (
     <div>
-      <PageHeader
-        title="Tài khoản cá nhân"
-        description="Thông tin · Bảo mật · Thiết bị · Thông báo · Tích hợp"
-      />
+      <PageHeader title={t("profile.title")} description={t("profile.subtitle")} />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         <KpiCard
