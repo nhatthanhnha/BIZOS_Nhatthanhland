@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { KpiCard } from "@/components/kpi/KpiCard";
 import { KpiHeroDonut } from "@/components/kpi/KpiHeroDonut";
-import { OrgGraph } from "@/components/org/OrgGraph";
+import { OrgGraph } from "@/components/org/OrgGraphLazy";
 import { ProgressList } from "@/components/widgets/ProgressList";
 import { ActivityFeed } from "@/components/widgets/ActivityFeed";
 import { StatChip } from "@/components/widgets/StatChip";
@@ -21,6 +21,8 @@ import {
 import { buildKpiRows } from "@/lib/kpi/cascade";
 import { formatCompactVND } from "@/lib/utils";
 import { Users, Network, Wallet, Target, Sparkles } from "lucide-react";
+
+export const revalidate = 300;
 
 export default async function OrgPage() {
   const { t } = await tServer();
@@ -59,6 +61,7 @@ export default async function OrgPage() {
   return (
     <div>
       <PageHeader
+        helpKey="/org"
         title={t("org.title")}
         description={t("org.subtitle")}
         actions={<Badge variant="info">{demo.demoCompany.name}</Badge>}

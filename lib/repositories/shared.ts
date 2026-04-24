@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 import { createClientOrNull, createServiceRoleClient } from "@/lib/supabase/server";
 import type { Database, TableRow } from "@/lib/supabase/database.types";
@@ -27,12 +28,12 @@ export async function getServiceClient() {
   return (await createServiceRoleClient()) as ServiceClient;
 }
 
-export async function getAuthenticatedUser() {
+export const getAuthenticatedUser = cache(async () => {
   const client = await createClientOrNull();
   if (!client) return null;
   const { data } = await client.auth.getUser();
   return data.user;
-}
+});
 
 export async function getUserContext(user?: User | null): Promise<UserContext> {
   const db = await createClientOrNull();

@@ -1,10 +1,47 @@
 "use client";
 
+import { useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NAV_ITEMS } from "@/lib/nav";
+import { ChevronDown } from "lucide-react";
+import { NAV_GROUPS, type NavGroup, type NavItem } from "@/lib/nav";
 import { t as rawT, type Locale } from "@/lib/i18n/dict";
 import { cn } from "@/lib/utils";
+
+const STORAGE_KEY = "bizos.sidebar.groups";
+
+function filterGroups(groups: NavGroup[], roles: string[]): NavGroup[] {
+  return groups
+    .map((g) => ({
+      ...g,
+      items: g.items.filter((item) => !item.roles || item.roles.some((r) => roles.includes(r))),
+    }))
+    .filter((g) => g.items.length > 0);
+}
+
+function findGroupIdForPath(groups: NavGroup[], pathname: string): string | null {
+  for (const g of groups) {
+    if (g.items.some((i) => pathname === i.href || (i.href !== "/" && pathname.startsWith(i.href)))) {
+      return g.id;
+    }
+  }
+  return null;
+}
+
+function subscribeStorage(cb: () => void) {
+  window.addEventListener("storage", cb);
+  return () => window.removeEventListener("storage", cb);
+}
+function getClientStored(): string {
+  try {
+    return window.localStorage.getItem(STORAGE_KEY) ?? "";
+  } catch {
+    return "";
+  }
+}
+function getServerStored(): string {
+  return "";
+}
 
 export function Sidebar({
   locale = "vi",
@@ -15,7 +52,44 @@ export function Sidebar({
 }) {
   const pathname = usePathname();
   const t = (key: Parameters<typeof rawT>[1]) => rawT(locale, key);
-  const visibleItems = NAV_ITEMS.filter((item) => !item.roles || item.roles.some((role) => roles.includes(role)));
+
+  const visibleGroups = useMemo(() => filterGroups(NAV_GROUPS, roles), [roles]);
+
+  const storedRaw = useSyncExternalStore(subscribeStorage, getClientStored, getServerStored);
+
+  const [localOverride, setLocalOverride] = useState<Set<string> | null>(null);
+
+  const openGroups = useMemo(() => {
+    if (localOverride) return localOverride;
+    let set: Set<string>;
+    if (storedRaw) {
+      try {
+        const arr = JSON.parse(storedRaw);
+        set = Array.isArray(arr) ? new Set<string>(arr) : new Set();
+      } catch {
+        set = new Set();
+      }
+    } else {
+      set = new Set(NAV_GROUPS.filter((g) => g.defaultOpen).map((g) => g.id));
+    }
+    const activeGroup = findGroupIdForPath(visibleGroups, pathname);
+    if (activeGroup) set.add(activeGroup);
+    return set;
+  }, [storedRaw, localOverride, visibleGroups, pathname]);
+
+  const toggle = (id: string) => {
+    const next = new Set(openGroups);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    setLocalOverride(next);
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(next)));
+      } catch {
+        // ignore
+      }
+    }
+  };
 
   return (
     <aside className="hidden md:flex md:w-[220px] md:flex-col md:fixed md:inset-y-0 md:left-0 md:z-30 md:bg-white md:ring-1 md:ring-[var(--line-soft)]">
@@ -30,26 +104,30 @@ export function Sidebar({
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-        {visibleItems.map((item) => {
-          const active =
-            pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
-          const Icon = item.icon;
+        {visibleGroups.map((group) => {
+          const open = openGroups.has(group.id);
+          const panelId = `sidebar-group-${group.id}`;
           return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 rounded-2xl px-3.5 py-3 text-[13px] transition-colors",
-                active
-                  ? "bg-[var(--brand-50)] text-[var(--brand-700)] font-semibold shadow-[inset_0_0_0_1px_var(--brand-100)]"
-                  : "text-[var(--text-soft)] hover:bg-[var(--surface-alt)] hover:text-[var(--text-strong)]",
+            <div key={group.id} className="pt-1.5 first:pt-0">
+              <button
+                type="button"
+                onClick={() => toggle(group.id)}
+                aria-expanded={open}
+                aria-controls={panelId}
+                aria-label={t("sidebar.group.toggle")}
+                className="w-full flex items-center justify-between gap-2 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--text-soft)] hover:text-[var(--text-strong)] transition-colors"
+              >
+                <span className="truncate">{t(group.labelKey)}</span>
+                <ChevronDown
+                  className={cn("h-3.5 w-3.5 shrink-0 transition-transform", open ? "" : "-rotate-90")}
+                />
+              </button>
+              {open && (
+                <div id={panelId} className="mt-1 space-y-1">
+                  {group.items.map((item) => renderItem(item, pathname, t))}
+                </div>
               )}
-            >
-              <span className={cn("flex h-8 w-8 items-center justify-center rounded-xl", active ? "bg-white" : "bg-[var(--surface-alt)]")}>
-                <Icon className="h-4 w-4 shrink-0" />
-              </span>
-              <span className="truncate">{t(item.labelKey)}</span>
-            </Link>
+            </div>
           );
         })}
       </nav>
@@ -60,5 +138,27 @@ export function Sidebar({
         <div className="text-[11px] opacity-80 mt-1.5 leading-tight">{t("sidebar.perfHint")}</div>
       </div>
     </aside>
+  );
+}
+
+function renderItem(item: NavItem, pathname: string, t: (k: Parameters<typeof rawT>[1]) => string) {
+  const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+  const Icon = item.icon;
+  return (
+    <Link
+      key={item.href}
+      href={item.href}
+      className={cn(
+        "flex items-center gap-3 rounded-2xl px-3.5 py-3 text-[13px] transition-colors",
+        active
+          ? "bg-[var(--brand-50)] text-[var(--brand-700)] font-semibold shadow-[inset_0_0_0_1px_var(--brand-100)]"
+          : "text-[var(--text-soft)] hover:bg-[var(--surface-alt)] hover:text-[var(--text-strong)]",
+      )}
+    >
+      <span className={cn("flex h-8 w-8 items-center justify-center rounded-xl", active ? "bg-white" : "bg-[var(--surface-alt)]")}>
+        <Icon className="h-4 w-4 shrink-0" />
+      </span>
+      <span className="truncate">{t(item.labelKey)}</span>
+    </Link>
   );
 }

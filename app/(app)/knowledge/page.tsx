@@ -11,6 +11,8 @@ import { BookOpen, FileCheck, Shield, CheckSquare, FileText } from "lucide-react
 import { fetchSops, fetchDepartments } from "@/lib/queries";
 import { createSopAction } from "@/app/(app)/workspace/actions";
 
+export const revalidate = 300;
+
 export default async function KnowledgePage() {
   const { t } = await tServer();
   const [sops, departments] = await Promise.all([fetchSops(), fetchDepartments()]);
@@ -38,6 +40,7 @@ export default async function KnowledgePage() {
   return (
     <div>
       <PageHeader
+        helpKey="/knowledge"
         title={t("knowledge.title")}
         description={t("knowledge.subtitle")}
         actions={<Button>+ SOP</Button>}

@@ -70,6 +70,7 @@ export default async function ProjectsPage() {
   return (
     <div>
       <PageHeader
+        helpKey="/projects"
         title={t("proj.title")}
         description={t("proj.subtitle")}
         actions={<Button>{t("proj.new")}</Button>}

@@ -77,7 +77,7 @@ export default async function ProfilePage() {
 
   return (
     <div className="space-y-5">
-      <PageHeader title="Tài khoản cá nhân" description="Trang chủ > Tài khoản cá nhân" />
+      <PageHeader helpKey="/profile" title="Tài khoản cá nhân" description="Trang chủ > Tài khoản cá nhân" />
 
       <div className="grid grid-cols-2 gap-3 xl:grid-cols-6">
         {metrics.map((metric) => (

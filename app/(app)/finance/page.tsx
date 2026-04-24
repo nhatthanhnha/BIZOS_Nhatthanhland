@@ -15,6 +15,8 @@ import { createAccountingEntryAction } from "@/app/(app)/workspace/actions";
 import { formatCompactVND, formatPercent, formatVND } from "@/lib/utils";
 import { CircleDollarSign, TrendingUp, Wallet, Landmark, PiggyBank, Percent } from "lucide-react";
 
+export const revalidate = 300;
+
 export default async function FinancePage() {
   const { t } = await tServer();
   const [entries, payroll, departments] = await Promise.all([
@@ -56,6 +58,7 @@ export default async function FinancePage() {
   return (
     <div>
       <PageHeader
+        helpKey="/finance"
         title={t("finance.title")}
         description={t("finance.subtitle")}
         actions={<Badge variant="info">YTD</Badge>}

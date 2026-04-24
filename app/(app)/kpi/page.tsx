@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { KpiCard } from "@/components/kpi/KpiCard";
 import { KpiStatusBadge } from "@/components/kpi/KpiStatusBadge";
-import { KpiTreeGraph } from "@/components/kpi/KpiTreeGraph";
+import { KpiTreeGraph } from "@/components/kpi/KpiTreeGraphLazy";
 import { ProgressList } from "@/components/widgets/ProgressList";
 import { InsightCard } from "@/components/widgets/InsightCard";
 import { StatChip } from "@/components/widgets/StatChip";
@@ -92,6 +92,7 @@ export default async function KpiPage() {
   return (
     <div>
       <PageHeader
+        helpKey="/kpi"
         title={t("kpi.title")}
         description={t("kpi.subtitle")}
         actions={

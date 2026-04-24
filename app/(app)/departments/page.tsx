@@ -13,6 +13,8 @@ import { buildKpiRows } from "@/lib/kpi/cascade";
 import { formatCompactVND } from "@/lib/utils";
 import type { Department } from "@/types/domain";
 
+export const revalidate = 300;
+
 export default async function DepartmentsPage() {
   const { t } = await tServer();
   const [departments, employees, kpis, targets, actuals] = await Promise.all([
@@ -87,6 +89,7 @@ export default async function DepartmentsPage() {
   return (
     <div>
       <PageHeader
+        helpKey="/departments"
         title={t("depts.title")}
         description={t("depts.subtitle")}
         actions={<Button>{t("depts.addNew")}</Button>}

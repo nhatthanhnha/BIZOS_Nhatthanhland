@@ -42,6 +42,7 @@ export default async function ApprovalsPage() {
   return (
     <div>
       <PageHeader
+        helpKey="/approvals"
         title={t("approvals.title")}
         description={t("approvals.subtitle")}
         actions={<Button variant="outline">Workflow</Button>}

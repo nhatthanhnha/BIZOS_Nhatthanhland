@@ -69,6 +69,7 @@ export default async function OperationsPage() {
   return (
     <div>
       <PageHeader
+        helpKey="/operations"
         title={t("ops.title")}
         description={t("ops.subtitle")}
         actions={<Button>{t("ops.newTask")}</Button>}

@@ -10,6 +10,8 @@ import { StatChip } from "@/components/widgets/StatChip";
 import { fetchReports, fetchReportSchedules } from "@/lib/queries";
 import { FileText, Download, Calendar, Mail, Clock, FileSpreadsheet, Sparkles } from "lucide-react";
 
+export const revalidate = 300;
+
 export default async function ReportsPage() {
   const { t } = await tServer();
   const [reportsRaw, schedulesRaw] = await Promise.all([fetchReports(), fetchReportSchedules()]);
@@ -79,6 +81,7 @@ export default async function ReportsPage() {
   return (
     <div>
       <PageHeader
+        helpKey="/reports"
         title={t("reports.title")}
         description={t("reports.subtitle")}
         actions={<Button>{t("reports.new")}</Button>}

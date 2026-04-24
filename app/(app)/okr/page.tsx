@@ -32,6 +32,7 @@ export default async function OkrPage() {
   return (
     <div>
       <PageHeader
+        helpKey="/okr"
         title={t("okr.title")}
         description={t("okr.subtitle")}
         actions={<Button>{t("okr.new")}</Button>}

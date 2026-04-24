@@ -36,6 +36,8 @@ import {
 import { buildKpiRows } from "@/lib/kpi/cascade";
 import { formatCompactVND, formatPercent } from "@/lib/utils";
 
+export const revalidate = 300;
+
 export default async function DashboardPage() {
   const { t } = await tServer();
   const [kpis, targets, actuals, employees, payroll, tasks, alerts, entries, departments] = await Promise.all([
@@ -108,6 +110,7 @@ export default async function DashboardPage() {
   return (
     <div>
       <PageHeader
+        helpKey="/dashboard"
         title={t("dashboard.title")}
         description={t("dashboard.subtitle")}
         actions={<Badge variant="info">{t("common.updated")}</Badge>}

@@ -21,6 +21,7 @@ export default async function ForecastPage() {
   return (
     <div>
       <PageHeader
+        helpKey="/forecast"
         title={t("forecast.title")}
         description={t("forecast.subtitle")}
         actions={<Badge variant="info">Simulator live</Badge>}

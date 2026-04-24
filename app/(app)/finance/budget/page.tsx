@@ -9,6 +9,8 @@ import { saveDepartmentBudgetAction } from "@/app/(app)/workspace/actions";
 import { buildBudgetVarianceRows } from "@/lib/finance/statements";
 import { formatCompactVND, formatPercent } from "@/lib/utils";
 
+export const revalidate = 300;
+
 export default async function BudgetPage() {
   const [departments, entries] = await Promise.all([fetchDepartments(), fetchAccounting()]);
 

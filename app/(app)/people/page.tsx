@@ -78,6 +78,7 @@ export default async function PeoplePage() {
   return (
     <div>
       <PageHeader
+        helpKey="/people"
         title={t("people.title")}
         description={t("people.subtitle")}
         actions={<Button>{t("people.addNew")}</Button>}

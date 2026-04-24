@@ -77,6 +77,7 @@ export default async function CompensationPage() {
   return (
     <div>
       <PageHeader
+        helpKey="/compensation"
         title={t("comp.title")}
         description={t("comp.subtitle")}
         actions={<Badge variant="info">{t("common.draft")}</Badge>}

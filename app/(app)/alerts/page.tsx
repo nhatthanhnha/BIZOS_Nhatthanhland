@@ -37,6 +37,7 @@ export default async function AlertsPage() {
   return (
     <div>
       <PageHeader
+        helpKey="/alerts"
         title={t("alerts.title")}
         description={t("alerts.subtitle")}
         actions={<Button variant="outline">{t("common.edit")} rule</Button>}

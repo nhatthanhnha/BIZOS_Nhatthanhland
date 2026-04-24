@@ -5,6 +5,8 @@ import { BarCompare } from "@/components/charts/BarCompare";
 import { fetchAccounting, fetchPayroll, fetchDepartments } from "@/lib/queries";
 import { formatVND } from "@/lib/utils";
 
+export const revalidate = 300;
+
 export default async function PnlPage() {
   const [entries, payroll, departments] = await Promise.all([
     fetchAccounting(),

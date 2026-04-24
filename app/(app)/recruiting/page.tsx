@@ -68,6 +68,7 @@ export default async function RecruitingPage() {
   return (
     <div>
       <PageHeader
+        helpKey="/recruiting"
         title={t("recruiting.title")}
         description={t("recruiting.subtitle")}
         actions={<Button>+ {t("nav.recruiting")}</Button>}

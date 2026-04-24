@@ -3,6 +3,7 @@ import { getLocale } from "@/lib/i18n/server";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Topbar } from "@/components/layout/Topbar";
 import { Footer } from "@/components/layout/Footer";
+import { AppContextProvider } from "@/components/layout/AppContext";
 import { getAuthenticatedUser, getUserContext } from "@/lib/repositories/shared";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
@@ -12,13 +13,15 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const roleLabel = context.roles[0]?.toUpperCase() ?? "CEO";
 
   return (
-    <div className="min-h-screen bg-[var(--background)] flex flex-col">
-      <Sidebar locale={locale} roles={context.roles} />
-      <Topbar userEmail={user?.email ?? "demo@bizos.local"} locale={locale} roleLabel={roleLabel} />
-      <main className="flex-1 px-6 py-5 md:ml-[220px]">{children}</main>
-      <div className="md:ml-[220px]">
-        <Footer locale={locale} />
+    <AppContextProvider locale={locale} roles={context.roles}>
+      <div className="min-h-screen bg-[var(--background)] flex flex-col">
+        <Sidebar locale={locale} roles={context.roles} />
+        <Topbar userEmail={user?.email ?? "demo@bizos.local"} locale={locale} roleLabel={roleLabel} />
+        <main className="flex-1 px-6 py-5 md:ml-[220px]">{children}</main>
+        <div className="md:ml-[220px]">
+          <Footer locale={locale} />
+        </div>
       </div>
-    </div>
+    </AppContextProvider>
   );
 }

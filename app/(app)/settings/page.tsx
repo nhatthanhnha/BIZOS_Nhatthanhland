@@ -27,7 +27,7 @@ export default async function SettingsPage() {
 
   return (
     <div>
-      <PageHeader title={t("settings.title")} description={t("settings.subtitle")} />
+      <PageHeader helpKey="/settings" title={t("settings.title")} description={t("settings.subtitle")} />
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 mb-6">
         <KpiCard label="Company" value={company.name} accent="indigo" icon={<Building2 className="h-3.5 w-3.5" />} />
