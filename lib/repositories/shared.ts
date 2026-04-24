@@ -1,7 +1,7 @@
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 import { createClientOrNull, createServiceRoleClient } from "@/lib/supabase/server";
 import type { Database, TableRow } from "@/lib/supabase/database.types";
-import { isDemoMode } from "@/lib/env";
+import { isBuildTime, isDemoMode } from "@/lib/env";
 import * as demo from "@/lib/queries/demo";
 import type { UserContext } from "@/lib/auth/permissions";
 
@@ -74,14 +74,14 @@ export async function getUserContext(user?: User | null): Promise<UserContext> {
 export async function withDemoFallback<T>(fallback: T, query: (db: DbClient) => Promise<T>) {
   const db = await createClientOrNull();
   if (!db) {
-    if (isDemoMode()) return fallback;
+    if (isDemoMode() || isBuildTime()) return fallback;
     throw new RepositoryError("Thiếu cấu hình Supabase và DEMO_MODE đang tắt.");
   }
 
   try {
     return await query(db as DbClient);
   } catch (error) {
-    if (isDemoMode()) return fallback;
+    if (isDemoMode() || isBuildTime()) return fallback;
     throw error;
   }
 }

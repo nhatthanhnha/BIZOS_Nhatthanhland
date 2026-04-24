@@ -121,11 +121,11 @@ Task (/operations) → KPI cá nhân (/people/:id)
 
 ```bash
 pnpm install
-cp .env.example .env.local   # điền Supabase URL + keys (optional — demo mode works without)
-pnpm dev
+cp .env.example .env.local   # điền Supabase URL + keys nếu chạy live
+DEMO_MODE=true pnpm dev      # hoặc bật demo mode khi chưa có Supabase
 ```
 
-Mở http://localhost:3000 — redirect sang `/login`. Không có env → tự bật **Demo mode** với 14 employees, 14 KPI, payroll, finance mẫu, tất cả 19 trang chạy được.
+Mở http://localhost:3000 — redirect sang `/login`. Nếu chưa cấu hình Supabase, hãy bật `DEMO_MODE=true` để duyệt đủ 19 trang bằng data mẫu.
 
 ## 🗄 Thiết lập Supabase
 
@@ -150,7 +150,8 @@ Mở http://localhost:3000 — redirect sang `/login`. Không có env → tự b
 1. Push repo lên GitHub.
 2. Trên https://vercel.com → **Add New → Project** → chọn repo.
 3. Vercel tự nhận `vercel.json` + framework Next.js.
-4. Env vars: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_APP_URL`.
+4. Env vars live: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_APP_URL`.
+5. Nếu chỉ muốn deploy bản demo trên Vercel, thêm `DEMO_MODE=true`.
 5. Deploy — healthcheck tại `/api/health`.
 
 ### Option B — Railway (Docker)
