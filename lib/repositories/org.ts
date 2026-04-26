@@ -1,7 +1,7 @@
 import * as demo from "@/lib/queries/demo";
 import { writeAuditLog } from "@/lib/repositories/audit";
 import { getAuthenticatedUser, getDbClientOrThrow, getUserContext, withDemoFallback } from "@/lib/repositories/shared";
-import { isDemoMode } from "@/lib/env";
+import { hasSupabaseEnv } from "@/lib/env";
 
 export async function listDepartments() {
   return withDemoFallback(demo.demoDepartments, async (db) => {
@@ -109,15 +109,30 @@ export async function updateCompanySettings(input: {
   currency: string;
   timezone: string;
 }) {
-  if (isDemoMode()) return;
-
-  const user = await getAuthenticatedUser();
-  if (!user) throw new Error("Bạn chưa đăng nhập. Vui lòng đăng nhập để lưu thay đổi.");
-
-  const context = await getUserContext(user);
-  if (!context.companyId) throw new Error("Không tìm thấy công ty liên kết với tài khoản này.");
+  if (!hasSupabaseEnv()) {
+    throw new Error("Chưa cấu hình Supabase. Vui lòng thêm NEXT_PUBLIC_SUPABASE_URL và NEXT_PUBLIC_SUPABASE_ANON_KEY vào Vercel.");
+  }
 
   const db = await getDbClientOrThrow();
+
+  // Resolve company ID: prefer user-scoped context, fall back to first company row
+  const user = await getAuthenticatedUser();
+  const context = await getUserContext(user);
+  let companyId = context.companyId;
+
+  if (!companyId) {
+    type CompanyIdRow = { id: string };
+    const { data } = await (db.from("companies") as unknown as {
+      select: (cols: string) => {
+        limit: (n: number) => {
+          maybeSingle: () => Promise<{ data: CompanyIdRow | null }>;
+        };
+      };
+    }).select("id").limit(1).maybeSingle();
+    companyId = data?.id ?? null;
+  }
+
+  if (!companyId) throw new Error("Không tìm thấy công ty. Vui lòng kiểm tra cơ sở dữ liệu.");
 
   // database.types.ts only defines Row (no Update type) — cast required to call .update()
   const companiesTable = db.from("companies") as unknown as {
@@ -131,7 +146,7 @@ export async function updateCompanySettings(input: {
     code: input.code || null,
     currency: input.currency,
     timezone: input.timezone,
-  }).eq("id", context.companyId);
+  }).eq("id", companyId);
 
   if (error) throw new Error(error.message);
 
@@ -139,7 +154,7 @@ export async function updateCompanySettings(input: {
     await writeAuditLog({
       action: "company.update",
       entity: "companies",
-      entityId: context.companyId,
+      entityId: companyId,
       after: input,
     });
   } catch {
