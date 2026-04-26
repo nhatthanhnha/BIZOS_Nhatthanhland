@@ -3,12 +3,10 @@ import { tServer } from "@/lib/i18n/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { KpiCard } from "@/components/kpi/KpiCard";
 import { StatChip } from "@/components/widgets/StatChip";
 import { fetchCompany, fetchDepartments, fetchEmployees } from "@/lib/queries";
-import { updateCompanySettingsAction } from "@/app/(app)/workspace/actions";
+import { CompanySettingsForm } from "@/app/(app)/settings/CompanySettingsForm";
 import {
   Building2,
   Users,
@@ -47,27 +45,12 @@ export default async function SettingsPage() {
             </div>
           </CardHeader>
           <CardContent className="space-y-3 text-sm">
-            <form action={updateCompanySettingsAction} className="space-y-3">
-              <div className="space-y-1.5">
-                <Label>Tên công ty</Label>
-                <Input name="name" defaultValue={company.name} />
-              </div>
-              <div className="space-y-1.5">
-                <Label>Mã công ty</Label>
-                <Input name="code" defaultValue={company.code ?? ""} />
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <div className="space-y-1.5">
-                  <Label>Currency</Label>
-                  <Input name="currency" defaultValue={company.currency} />
-                </div>
-                <div className="space-y-1.5">
-                  <Label>Timezone</Label>
-                  <Input name="timezone" defaultValue={company.timezone} />
-                </div>
-              </div>
-              <Button className="w-full" type="submit">Lưu thay đổi</Button>
-            </form>
+            <CompanySettingsForm
+              name={company.name}
+              code={company.code ?? ""}
+              currency={company.currency}
+              timezone={company.timezone}
+            />
           </CardContent>
         </Card>
 

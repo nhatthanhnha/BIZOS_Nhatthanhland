@@ -1,6 +1,7 @@
 import * as demo from "@/lib/queries/demo";
 import { writeAuditLog } from "@/lib/repositories/audit";
 import { getAuthenticatedUser, getDbClientOrThrow, getUserContext, withDemoFallback } from "@/lib/repositories/shared";
+import { isDemoMode } from "@/lib/env";
 
 export async function listDepartments() {
   return withDemoFallback(demo.demoDepartments, async (db) => {
@@ -108,26 +109,40 @@ export async function updateCompanySettings(input: {
   currency: string;
   timezone: string;
 }) {
+  if (isDemoMode()) return;
+
   const user = await getAuthenticatedUser();
+  if (!user) throw new Error("Bạn chưa đăng nhập. Vui lòng đăng nhập để lưu thay đổi.");
+
   const context = await getUserContext(user);
-  if (!context.companyId) return;
+  if (!context.companyId) throw new Error("Không tìm thấy công ty liên kết với tài khoản này.");
 
   const db = await getDbClientOrThrow();
-  const companyTable = db.from("companies") as unknown as {
-    update: (values: Record<string, unknown>) => { eq: (column: string, value: string) => Promise<unknown> };
+
+  // database.types.ts only defines Row (no Update type) — cast required to call .update()
+  const companiesTable = db.from("companies") as unknown as {
+    update: (values: Record<string, unknown>) => {
+      eq: (col: string, val: string) => Promise<{ error: { message: string } | null }>;
+    };
   };
 
-  await companyTable.update({
+  const { error } = await companiesTable.update({
     name: input.name,
     code: input.code || null,
     currency: input.currency,
     timezone: input.timezone,
   }).eq("id", context.companyId);
 
-  await writeAuditLog({
-    action: "company.update",
-    entity: "companies",
-    entityId: context.companyId,
-    after: input,
-  });
+  if (error) throw new Error(error.message);
+
+  try {
+    await writeAuditLog({
+      action: "company.update",
+      entity: "companies",
+      entityId: context.companyId,
+      after: input,
+    });
+  } catch {
+    // audit log failure should not block the save
+  }
 }

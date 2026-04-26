@@ -137,12 +137,25 @@ export async function createSopAction(formData: FormData) {
   revalidatePath("/knowledge");
 }
 
-export async function updateCompanySettingsAction(formData: FormData) {
-  await updateCompanySettings({
-    name: String(formData.get("name") ?? ""),
-    code: String(formData.get("code") ?? ""),
-    currency: String(formData.get("currency") ?? "VND"),
-    timezone: String(formData.get("timezone") ?? "Asia/Ho_Chi_Minh"),
-  });
-  revalidatePath("/settings");
+export type CompanySettingsState = { success: boolean; error?: string } | null;
+
+export async function updateCompanySettingsAction(
+  _prevState: CompanySettingsState,
+  formData: FormData,
+): Promise<CompanySettingsState> {
+  try {
+    await updateCompanySettings({
+      name: String(formData.get("name") ?? ""),
+      code: String(formData.get("code") ?? ""),
+      currency: String(formData.get("currency") ?? "VND"),
+      timezone: String(formData.get("timezone") ?? "Asia/Ho_Chi_Minh"),
+    });
+    revalidatePath("/settings");
+    return { success: true };
+  } catch (err) {
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Lưu thất bại. Vui lòng thử lại.",
+    };
+  }
 }

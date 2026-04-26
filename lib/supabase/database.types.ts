@@ -20,6 +20,15 @@ export type Database = {
           created_at: string;
           updated_at: string;
         };
+        Update: {
+          id?: string;
+          name?: string;
+          code?: string | null;
+          currency?: string;
+          timezone?: string;
+          settings?: Json;
+          updated_at?: string;
+        };
       };
       departments: {
         Row: {
