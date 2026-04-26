@@ -22,11 +22,33 @@ export async function login(formData: FormData): Promise<void> {
   const password = String(formData.get("password") ?? "");
   const next = String(formData.get("next") ?? "/dashboard");
 
-  const supabase = (await createClientOrNull())!;
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  if (!email || !password) {
+    redirect(encodeError("Vui lòng nhập email và mật khẩu.", "/login"));
+  }
+
+  let supabase;
+  try {
+    supabase = (await createClientOrNull())!;
+  } catch (e) {
+    redirect(encodeError("Không thể kết nối Supabase. Kiểm tra lại NEXT_PUBLIC_SUPABASE_URL và ANON_KEY trong .env.local.", "/login"));
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    redirect(encodeError(error.message, "/login"));
+    let msg = error.message;
+    if (msg === "Invalid login credentials") {
+      msg = "Sai email hoặc mật khẩu. Kiểm tra lại tài khoản đã tạo trên Supabase.";
+    } else if (msg.toLowerCase().includes("email not confirmed")) {
+      msg = "Email chưa được xác nhận. Vào Supabase → Authentication → Users → click user → Confirm email.";
+    } else if (msg.toLowerCase().includes("network")) {
+      msg = "Lỗi kết nối mạng tới Supabase: " + msg;
+    }
+    redirect(encodeError(msg, "/login"));
+  }
+
+  if (!data.user) {
+    redirect(encodeError("Đăng nhập thất bại — không nhận được user từ Supabase.", "/login"));
   }
 
   redirect(next || "/dashboard");
