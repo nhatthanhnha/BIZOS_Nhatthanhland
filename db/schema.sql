@@ -828,7 +828,7 @@ do $$
 declare r record;
 begin
   for r in select unnest(array[
-    'companies','departments','employees','kpis','kpi_formulas','kpi_actuals',
+    'companies','employees','kpis','kpi_formulas','kpi_actuals',
     'tasks','sop_documents','app_settings','user_preferences'
   ]) as tbl
   loop
